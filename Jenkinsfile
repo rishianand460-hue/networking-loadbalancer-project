@@ -17,7 +17,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo 'Test stage executed'
+                echo 'Automatic SCM polling test'
             }
         }
     }
