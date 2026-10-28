@@ -2,23 +2,46 @@
 pipeline {
     agent any
 
-    stages {
-        stage('Checkout') {
-            steps {
-                echo 'Jenkinsfile loaded from GitHub'
-            }
-        }
+    parameters {
+        booleanParam(
+            name: 'RUN_TESTS',
+            defaultValue: true,
+            description: 'Run the test stage?'
+        )
+    }
 
+    stages {
         stage('Build') {
             steps {
-                echo 'Build stage executed'
+                echo 'Building application'
             }
         }
 
         stage('Test') {
-            steps {
-                echo 'Automatic SCM polling test'
+            when {
+                expression { params.RUN_TESTS == true }
             }
+            steps {
+                echo 'Running tests'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploy stage executed'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline completed successfully'
+        }
+        failure {
+            echo 'Pipeline failed'
+        }
+        always {
+            echo 'Pipeline execution finished'
         }
     }
 }
